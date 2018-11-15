@@ -3,7 +3,7 @@
 	// Cria uma variável de sessão "con", pois terá acesso global. 
 	// Abre a conexão e armazena o objeto que representa esta conexão na variável global
 	// Esta variável será referenciada em cada acesso ao banco de dados
-	$_SESSION['con'] = mysqli_connect("localhost", "admin", "aluno","DB_SERIES");
+	$_SESSION['con'] = mysqli_connect("localhost", "admin", "aluno","db_series");
 
 	if (mysqli_connect_errno() != 0) 
 	{
@@ -23,9 +23,9 @@
   
 
 
-	function inserir($nome, $genero, $censura, $temp, $desc)	
+	function inserir($nome, $genero, $censura, $temp, $desc, $img, $video)	
     {
-		$sql = "INSERT into db_series (NOME, GENERO, CENSURA, TEMPORADAS, DESCRICAO) values ('$nome', '$genero', '$censura', '$temp', '$desc')";
+		$sql = "INSERT INTO tb_series (NOME, GENERO, CENSURA, TEMPORADAS, DESCRICAO, FOTO, TRAILER) VALUES ('".$nome."', '".$genero."', '".$censura."', '".$temp."', '".$desc."', '".$img."', '".$video."')";
 
 		if(mysqli_query($_SESSION['con'],$sql)) 
         {
@@ -33,40 +33,50 @@
 		}
 	}
 
-    function listar() {
-		
-		$sql = "SELECT * from db_series";		
-		$return = mysqli_query($_SESSION['con'], $sql); # retorna registros (SELECT)
-		$resultado = array();
-		while($reg = mysqli_fetch_assoc($resultado))	
-        {
-			array_push($resultado, $reg);
+    function listar($genero) {
+        
+        if($genero == "Todos os Generos") $sql = "SELECT * FROM tb_series";
+        else $sql = "SELECT * FROM tb_series WHERE GENERO = '".$genero."'";		
+		$retorno = mysqli_query($_SESSION['con'], $sql); # retorna registros (SELECT)
+		$lista = array();
+		while($reg = mysqli_fetch_assoc($retorno))	{
+			array_push($lista, $reg);
 		}
-		return $resultado;
+		return $lista;
 	}
 
-	function buscar($argumentos) {
+	function buscarCod($cod) {
 		
-		$sql = "SELECT ID, NOME, GENERO, CENSURA, TEMPORADAS, DESCRICAO from db_series $argumentos";		
-		$return = mysqli_query($_SESSION['con'], $sql); # retorna registros (SELECT)
-		$resultado = array();
-		while($reg = mysqli_fetch_assoc($resultado))	
-        {
-			array_push($resultado, $reg);
+		$sql = "SELECT * FROM tb_series WHERE CODIGO = '".$cod."'";		
+		$retorno = mysqli_query($_SESSION['con'], $sql); # retorna registros (SELECT)
+		$lista = array();
+		while($reg = mysqli_fetch_assoc($retorno))	{
+			array_push($lista, $reg);
 		}
-		return $resultado;
+		return $lista;
 	}
 
-	function atualizar($nome, $genero, $censura, $temp, $desc, $id) {
+    function buscarNome($nome) {
 		
-		$sql = "UPDATE db_series SET $alteracoes $argumentos";			
+		$sql = "SELECT * FROM tb_series WHERE NOME = '".$nome."'";		
+		$retorno = mysqli_query($_SESSION['con'], $sql); # retorna registros (SELECT)
+		$lista = array();
+		while($reg = mysqli_fetch_assoc($retorno))	{
+			array_push($lista, $reg);
+		}
+		return $lista;
+	}
+
+	function atualizar($nome, $genero, $censura, $temp, $desc, $img, $video, $id) {
+		
+		$sql = "UPDATE tb_series SET NOME='".$nome."', GENERO='".$genero."', CENSURA='".$censura."', TEMPORADAS='".$temp."', DESCRICAO='".$desc."', FOTO='".$img."', TRAILER='".$video."' WHERE CODIGO = ".$id."";			
 		if(mysqli_query($_SESSION['con'],$sql)) {
 			return true;
 		}
 	}
 
-	function deletar($tabela, $argumentos) {
-		$sql = "DELETE from $tabela $argumentos";
+	function deletar($cod) {
+		$sql = "DELETE from tb_series WHERE CODIGO = '".$cod."'";	
 
 		if(mysqli_query($_SESSION['con'], $sql)) {
 			return true;

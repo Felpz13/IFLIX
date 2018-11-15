@@ -1,6 +1,6 @@
 body 
 {
-    background-color: #8B0000;
+    background-color: #68b92c; 
 } 
 
 .fundo-principal
@@ -13,3 +13,15 @@ body
     font-family: 'Monoton', cursive;
 }
 
+.f2
+{
+    font-family: 'Raleway Dots', cursive; 
+}
+
+.f3
+{
+    font-family: 'Poppins', sans-serif;
+}
+
+
+#8B0000;
