@@ -58,7 +58,7 @@
 
     function buscarNome($nome) {
 		
-		$sql = "SELECT * FROM tb_series WHERE NOME = '".$nome."'";		
+		$sql = "SELECT * FROM tb_series WHERE nome LIKE '%".$nome."%'";		
 		$retorno = mysqli_query($_SESSION['con'], $sql); # retorna registros (SELECT)
 		$lista = array();
 		while($reg = mysqli_fetch_assoc($retorno))	{

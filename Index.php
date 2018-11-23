@@ -34,7 +34,7 @@
                     </div>
                     <div class="fundo-principal col-3 rounded w-100">
                         <div class="rounded mt-4 mr-4 d-flex justify-content-end">
-                            <form action="Index.php?opc=X" method="post">
+                            <form action="Index.php?opc=R" method="post">
                                 
                                  <input type="text" name="nome" class="rounded" size="12">
                                 
@@ -97,7 +97,7 @@
 
             else if($opc == 'C')
             {
-                $total = 0; //total de registros no BD
+                $total = 0; //contador de registros no BD
                 $todos = "Todos os Generos";
                 $genero = $_GET["genero"];
                 if($genero == "Todos") $genero = "Todos os Generos";
@@ -430,34 +430,14 @@
             {
                 $existe = true;
                 
-                if(isset($_GET["i"]))
-                {
-                    $cod = $_GET["i"];
-                    $serie = buscarCod($cod); 
-                }
+                $cod = $_GET["i"];
+                $serie = buscarCod($cod); 
                 
-                else
-                {
-                    $nome = $_POST["nome"];
-                    $serie = buscarNome($nome);
-                    
-                    if($serie == NULL)
-                    {
-                        echo '
-                            <div class="container mt-4 bg-dark">
-                                <h5 class="text-bold text-center text-white">A serie "'.$nome.'" não foi encontrada!!! </h5>
-                            </div></br>
-                            <a href="Index.php?opc=H"> <button class="btn bg-dark text-white mb-4">Voltar</button> </a>
-
-				        '; 
-                        
-                        $existe = false;
-                    } 
-                }
+                
+                
                      
                 
-                if($existe)
-                {
+                
                     $sinopse = (string) $serie[0]["DESCRICAO"];
                                 
                     echo'
@@ -506,6 +486,119 @@
                         </div>
                         </div>
                     '; 
+                
+            }
+            
+            else if($opc == 'R')
+            {
+                $nome = $_POST["nome"];
+                $series = buscarNome($nome);
+                $total = 0;
+                
+                if($nome == NULL)
+                {
+                    echo '
+                        <div class="container mt-4 bg-dark">
+                            <h5 class="text-bold text-center text-white">Digite um titulo de séria no campo da pesquisa!!! </h5>
+                        </div></br>
+                        <a href="Index.php?opc=H"> <button class="btn bg-dark text-white mb-4">Voltar</button> </a>
+
+				    ';  
+                }
+                
+                
+                    
+                else if($series == NULL)
+                {
+                    echo '
+                        <div class="container mt-4 bg-dark">
+                            <h5 class="text-bold text-center text-white">A serie "'.$nome.'" não foi encontrada!!! </h5>
+                        </div></br>
+                        <a href="Index.php?opc=H"> <button class="btn bg-dark text-white mb-4">Voltar</button> </a>
+
+				    '; 
+    
+                } 
+                
+                else
+                {
+                    
+                    
+                    echo' 
+               
+               <div class="row container">
+               
+                    <div class="col-3 mt-4 bg-dark">
+                    </div>
+                    <div class="fundo-principal text-center col-6  mt-4 bg-dark">
+                        <h2 class="text-white mt-2 f3"> Resultado da Busca: </h2>
+                    </div>
+                    <div class="fundo-principal col-3 mt-4 bg-dark container d-flex">
+                        <div class="justify-content-end mt-3">
+                            <p class="text-white">Genero:
+                                <select name="genero" onchange="location = this.value;">
+                                    <option selected disable>Selecione...</option>
+                                    <option value=Index.php?opc=C&genero=Todos>Todos</option>
+                                    <option value=Index.php?opc=C&genero=Drama>Drama</option>
+                                    <option value=Index.php?opc=C&genero=Suspense>Suspense</option>
+                                    <option value=Index.php?opc=C&genero=Crime>Crime</option>
+                                    <option value=Index.php?opc=C&genero=Terror>Terror</option>
+                                    <option value=Index.php?opc=C&genero=Fantasia>Fantasia</option>
+                                    <option value=Index.php?opc=C&genero=Ação>Ação</option>
+                                    <option value=Index.php?opc=C&genero=Aventura>Aventura</option>
+                                    <option value=Index.php?opc=C&genero=Fantasia>Fantasia</option>
+                                    <option value=Index.php?opc=C&genero=Comédia>Comédia</option>
+                                    <option value=Index.php?opc=C&genero=Romance>Romance</option>
+                                </select>
+                            </p>
+                        </div>
+                    </div>  
+               </div>
+               
+               <div class="row m-3">';
+                
+                if(count($series) > 0)
+                {
+                    while ($total < count($series))
+                    {
+                        for ($i = 0; $i < 4; $i++)
+                        {
+                            echo '
+                            <div class="col-3 mb-5">
+                                <div class="container d-flex h-25">
+                                    <div class="row justify-content-center align-self-center mx-auto">
+                                        <h5 class="text-white text-center">'.$series[$total]["NOME"].'</h5>     
+                                    </div>
+                                                               
+                                    
+                                </div>
+
+                                <a href="Index.php?opc=X&i='.$series[$total]["CODIGO"].'"><img class="d-block w-100" src="'.$series[$total]["FOTO"].'" alt="img'.$total.'.png"></a>
+
+                                <div class="container">
+                                    <div class="row mt-1 bg-dark">
+                                        <div class="col-8">
+                                            <p class="text-white mt-1">'.$series[$total]["GENERO"].'</p>
+                                        </div>
+                                        <div class="col-4 text-white container">                        
+                                            <div class="d-flex justify-content">                                                
+                                                <a href="Index.php?opc=A&i='.$series[$total]["CODIGO"].'"><img class="mt-1 ml-1" style="width: 24px; height: 24px;" src="Imagens/ed.png" alt="editar.png"></a>
+                                                <a href="Index.php?opc=D&i='.$series[$total]["CODIGO"].'"><img class="mt-1 ml-1" style="width: 24px; height: 24px;" src="Imagens/ex.png" alt="excluir.png"></a>                           
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                            </div>';
+                            $total+=1;
+                            if($total == count($series)) break;
+                        }
+
+                        echo '<div class="w-100"></div>';
+                    }
+
+                    echo'</div></br></br>'; 
+                    }
                 }
             }
                 
