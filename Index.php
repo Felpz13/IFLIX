@@ -5,12 +5,15 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="icon" href="Imagens/ifi.png"/>
+               
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="custom.css">
+        
         <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Raleway+Dots" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">        
+        
     </head>
 
     <body>
@@ -44,16 +47,17 @@
                     </div>  
                 </div>
             </div>
-            
+           
             <?php
-            
+                    
             include 'DB.php';
-            
+                        
             $opc = 'H';
-            if (isset($_GET["opc"])) $opc = $_GET["opc"];    
+            if (isset($_GET["opc"])) $opc = $_GET["opc"];
             
             if ($opc == 'H')
             {
+                
                 $series = listar("Todos os Generos");
                 
                  echo '
@@ -125,7 +129,6 @@
                                     <option value=Index.php?opc=C&genero=Fantasia>Fantasia</option>
                                     <option value=Index.php?opc=C&genero=Ação>Ação</option>
                                     <option value=Index.php?opc=C&genero=Aventura>Aventura</option>
-                                    <option value=Index.php?opc=C&genero=Fantasia>Fantasia</option>
                                     <option value=Index.php?opc=C&genero=Comédia>Comédia</option>
                                     <option value=Index.php?opc=C&genero=Romance>Romance</option>
                                 </select>
@@ -258,7 +261,7 @@
                     $video = ''.$_POST["video"].'?rel=0';
                     
                     $sucesso = inserir($nome, $genero, $censura, $temp, $desc, $img, $video);
-                        
+                                            
                     if($sucesso == true)
                     {
                         echo '
@@ -601,15 +604,65 @@
                     }
                 }
             }
-                
+            
+            $genero = "Todos os Generos";
+            $series = listar($genero);
+            
             ?>
             
+        <script>
+            var phpvar = <?php echo json_encode($series);?>;
+            Sync(phpvar);
+        </script>
+            
         </div>
+        
         <br/>
         <div class="container m-4 mx-auto">
             <p class="text-center text-white">Desenvolvido por GU3002284</p>
         </div>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-database.js"></script>
+        <script>
+            var config = {
+                apiKey: "AIzaSyAfgfBQkQsiThQa6NZ7DgEHmCtTYlpwgio",
+                authDomain: "iflix-249c7.firebaseapp.com",
+                databaseURL: "https://iflix-249c7.firebaseio.com",
+                projectId: "iflix-249c7",
+                storageBucket: "iflix-249c7.appspot.com",
+                messagingSenderId: "484557198837"
+            };
+            
+            firebase.initializeApp(config);
+            
+        </script>
+                        
+        <script>    
+                                    
+            function Sync(series) 
+            {                
+                var dir = firebase.database().ref();
+                var item = {series};
+                
+                dir.set(item);
+            }
+            
+        </script>
+        
+        <?php 
+        
+            $genero = "Todos os Generos";
+            $series = listar($genero);        
+        ?>
+        
+        <script>
+            var phpvar = <?php echo json_encode($series);?>;
+            Sync(phpvar);
+        </script>
+        
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
