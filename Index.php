@@ -627,12 +627,7 @@
         <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-database.js"></script>
         <script>
             var config = {
-                apiKey: "AIzaSyAfgfBQkQsiThQa6NZ7DgEHmCtTYlpwgio",
-                authDomain: "iflix-249c7.firebaseapp.com",
-                databaseURL: "https://iflix-249c7.firebaseio.com",
-                projectId: "iflix-249c7",
-                storageBucket: "iflix-249c7.appspot.com",
-                messagingSenderId: "484557198837"
+                
             };
             
             firebase.initializeApp(config);
